@@ -1,30 +1,30 @@
-# 端口设置
+# 基础配置
 port: 7890
 socks-port: 7891
-allow-lan: false
+mixed-port: 7893
+allow-lan: true           # 关键：允许局域网连接
+bind-address: "*"         # 监听所有网卡接口
 mode: rule
 log-level: info
-external-controller: 127.0.0.1:9090
 
-proxy-providers:
-  provider1:
-    type: http
-    url: "URL_FROM_PROVIDER"
-    path: ./providers/provider1.yaml
-    interval: 3600
-    health-check:
-      enable: true
-      url: https://www.google.com
-      interval: 600
+# 简单的 DNS 设置
+dns:
+  enable: false
+  enhanced-mode: fake-ip
+  nameserver:
+    - 223.5.5.5
+    - 114.114.114.114
 
-# 定义代理提供者（此处无需代理节点，所以为空）
-proxies: []
+proxies:
+  - name: "直连"
+    type: direct
+
 proxy-groups:
-  - name: 🚀 节点选择
+  - name: "默认分流"
     type: select
     proxies:
-      - DIRECT
+      - "直连"
 
-# 核心：将所有规则直接连接
 rules:
-  - MATCH,DIRECT
+  # 确保所有流量都走直连
+  - MATCH,直连
