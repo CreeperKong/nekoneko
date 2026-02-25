@@ -6,6 +6,17 @@ mode: rule
 log-level: info
 external-controller: 127.0.0.1:9090
 
+proxy-providers:
+  provider1:
+    type: http
+    url: "URL_FROM_PROVIDER"
+    path: ./providers/provider1.yaml
+    interval: 3600
+    health-check:
+      enable: true
+      url: https://www.google.com
+      interval: 600
+
 # 定义代理提供者（此处无需代理节点，所以为空）
 proxies: []
 proxy-groups:
