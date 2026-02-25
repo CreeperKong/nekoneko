@@ -15,16 +15,14 @@ dns:
     - 223.5.5.5
     - 114.114.114.114
 
-proxies:
-  - name: "直连"
-    type: direct
+# Clash.Meta 不支持在 proxies 中定义 type: direct，直连请使用内置策略 DIRECT
 
 proxy-groups:
   - name: "默认分流"
     type: select
     proxies:
-      - "直连"
+      - DIRECT
 
 rules:
   # 确保所有流量都走直连
-  - MATCH,直连
+  - MATCH,DIRECT
